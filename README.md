@@ -14,6 +14,7 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+My name is Nick Mathias 
 I am new to software development
 I am currently learning Java, html, Git. 
 I am hoping that an understanding of these languages will help me understand other languages.  
