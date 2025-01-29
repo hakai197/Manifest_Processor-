@@ -1,6 +1,6 @@
 public class CustomerBill {
 
-
+// Should this be a part of a Manifest Class?   
     private String proNumber;
     private String customerName;
     private String customerAddress;
