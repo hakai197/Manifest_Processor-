@@ -16,7 +16,7 @@ Here are some ideas to get you started:
 -->
 My name is Nick Mathias 
 I am new to software development
-I am currently learning Java, html, Git. 
+I am currently learning Java, HTML, Git. 
 I am hoping that an understanding of these languages will help me understand other languages.  
 Should you need to contact me my email is hakai197@gmail.com 
 
