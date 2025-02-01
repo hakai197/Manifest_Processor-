@@ -8,10 +8,13 @@ public class CustomerBill {
     private String shipperAddress;
     private int handlingUnits;
     private String dockDoorAssigned;
+    private int weight;
+    private String serviceDate;
 
 
     public CustomerBill(String proNumber, String customerName, String customerAddress,
-                        String shipperName, String shipperAddress, int handlingUnits,
+                        String shipperName, String shipperAddress, int handlingUnits,int weight,
+                        String serviceDate,
                         String dockDoorAssigned) {
         this.proNumber = proNumber;
         this.customerName = customerName;
@@ -20,18 +23,23 @@ public class CustomerBill {
         this.shipperAddress = shipperAddress;
         this.handlingUnits = handlingUnits;
         this.dockDoorAssigned = dockDoorAssigned;
+        this.weight= weight;
+        this.serviceDate = serviceDate;
     }
 
 
     public String getProNumber() {
+
         return proNumber;
     }
 
     public void setProNumber(String proNumber) {
+
         this.proNumber = proNumber;
     }
 
     public String getCustomerName() {
+
         return customerName;
     }
 
@@ -40,6 +48,7 @@ public class CustomerBill {
     }
 
     public String getCustomerAddress() {
+
         return customerAddress;
     }
 
@@ -48,37 +57,60 @@ public class CustomerBill {
     }
 
     public String getShipperName() {
+
         return shipperName;
     }
 
     public void setShipperName(String shipperName) {
+
         this.shipperName = shipperName;
     }
 
     public String getShipperAddress() {
+
         return shipperAddress;
     }
 
     public void setShipperAddress(String shipperAddress) {
+
         this.shipperAddress = shipperAddress;
     }
 
     public int getHandlingUnits() {
+
         return handlingUnits;
     }
 
     public void setHandlingUnits(int handlingUnits) {
+
         this.handlingUnits = handlingUnits;
     }
 
     public String getDockDoorAssigned() {
+
         return dockDoorAssigned;
     }
 
     public void setDockDoorAssigned(String dockDoorAssigned) {
+
         this.dockDoorAssigned = dockDoorAssigned;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public String getServiceDate() {
+        return serviceDate;
+    }
+
+    public void setServiceDate(String serviceDate) {
+        this.serviceDate = serviceDate;
+    }
 
     public String toString() {
         return "CustomerBill{" +
@@ -88,6 +120,8 @@ public class CustomerBill {
                 ", ShipperName='" + shipperName + '\'' +
                 ", ShipperAddress=" + shipperAddress + '\'' + ", " +
                 "HandlingUnits=" + handlingUnits + ", " +
+                "Weight=" + weight + "lbs, " +
+                "Service Date=" + serviceDate +
                 "DockDoorAssigned='" + dockDoorAssigned + '\'' + '}';
     }
 }
