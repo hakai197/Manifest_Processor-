@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomerBill {
 
 // Should this be a part of a Manifest Class?   
@@ -10,6 +13,7 @@ public class CustomerBill {
     private String dockDoorAssigned;
     private int weight;
     private String serviceDate;
+    private List <String> tags;
 
 
     public CustomerBill(String proNumber, String customerName, String customerAddress,
@@ -24,6 +28,7 @@ public class CustomerBill {
         this.handlingUnits = handlingUnits;
         this.dockDoorAssigned = dockDoorAssigned;
         this.weight= weight;
+        this.tags = new ArrayList<>();
         this.serviceDate = serviceDate;
     }
 
@@ -104,6 +109,14 @@ public class CustomerBill {
         this.weight = weight;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     public String getServiceDate() {
         return serviceDate;
     }
@@ -122,6 +135,7 @@ public class CustomerBill {
                 "HandlingUnits=" + handlingUnits + ", " +
                 "Weight=" + weight + "lbs, " +
                 "Service Date=" + serviceDate +
+                "Tags=" + tags +
                 "DockDoorAssigned='" + dockDoorAssigned + '\'' + '}';
     }
 }

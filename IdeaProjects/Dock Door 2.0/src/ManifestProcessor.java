@@ -1,15 +1,20 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ManifestProcessor {
     private static List<Integer> columbusDoors = new ArrayList<>();
     private static List<Integer> cincinnatiDoors = new ArrayList<>();
     private static List<Integer> daytonDoors = new ArrayList<>();
-    private static List<Integer>building1Doors = new ArrayList<>();
-    private static List<Integer>building2Doors = new ArrayList<>();
-    private static List<Integer>building3Doors = new ArrayList<>();
-    private static List<Integer>building4Doors = new ArrayList<>();
-    private static List<Integer>building5Doors = new ArrayList<>();
+    private static List<Integer> building1Doors = new ArrayList<>();
+    private static List<Integer> building2Doors = new ArrayList<>();
+    private static List<Integer> building3Doors = new ArrayList<>();
+    private static List<Integer> building4Doors = new ArrayList<>();
+    private static List<Integer> building5Doors = new ArrayList<>();
+    private static Set<Integer> assignedDoors = new HashSet<>();
+
+    private static Manifest manifest = new Manifest();
 
     public static void main(String[] args) {
         initializeColumbusDoors();
@@ -56,48 +61,52 @@ public class ManifestProcessor {
             daytonDoors.add(i);
         }
     }
+
     public static void initializeBuilding1Doors() {
         for (int i = 6; i <= 240; i++) {
-            columbusDoors.add(i);
+            building1Doors.add(i);
         }
         for (int i = 426; i <= 468; i++) {
-            columbusDoors.add(i);
-        }
-    }
-    public static void initializeBuilding2Doors() {
-        for (int i =83; i <= 115; i++) {
-            columbusDoors.add(i);
-        }
-        for (int i = 135; i <= 172; i++) {
-            columbusDoors.add(i);
-        }
-    }
-    public static void initializeBuilding3Doors() {
-        for (int i = 190; i <= 205; i++) {
-            columbusDoors.add(i);
-        }
-        for (int i = 399; i <= 412; i++) {
-            columbusDoors.add(i);
-        }
-    }
-    public static void initializeBuilding4Doors() {
-        for (int i = 230; i <= 246; i++) {
-            columbusDoors.add(i);
-        }
-        for (int i = 357; i <= 373; i++) {
-            columbusDoors.add(i);
-        }
-    }public static void initializeBuilding5Doors() {
-        for (int i = 266; i <= 299; i++) {
-            columbusDoors.add(i);
-        }
-        for (int i = 304; i <= 332; i++) {
-            columbusDoors.add(i);
+            building1Doors.add(i);
         }
     }
 
-// How do I import a text or image file?
-    // Should I import the class at this point?
+    public static void initializeBuilding2Doors() {
+        for (int i = 83; i <= 115; i++) {
+            building2Doors.add(i);
+        }
+        for (int i = 135; i <= 172; i++) {
+            building2Doors.add(i);
+        }
+    }
+
+    public static void initializeBuilding3Doors() {
+        for (int i = 190; i <= 205; i++) {
+            building3Doors.add(i);
+        }
+        for (int i = 399; i <= 412; i++) {
+            building3Doors.add(i);
+        }
+    }
+
+    public static void initializeBuilding4Doors() {
+        for (int i = 230; i <= 246; i++) {
+            building4Doors.add(i);
+        }
+        for (int i = 357; i <= 373; i++) {
+            building4Doors.add(i);
+        }
+    }
+
+    public static void initializeBuilding5Doors() {
+        for (int i = 266; i <= 299; i++) {
+            building5Doors.add(i);
+        }
+        for (int i = 304; i <= 332; i++) {
+            building5Doors.add(i);
+        }
+    }
+
     public static void importManifest() {
         System.out.println("Manifest Imported");
     }
@@ -108,25 +117,18 @@ public class ManifestProcessor {
         int openDoorNumber = lookForOpenDoor(doorNumber);
         assignDoor(openDoorNumber);
     }
-    // An order looks like this.
-    // Pro Number         Customer Address              Shipper Address               HU          Door assigned
-    // 999333454           124 Main Street               456 Method Way                2                344
-
-
 
     public static void scanManifest() {
         System.out.println("Manifest Scanned");
     }
-    // Does this need an import from above?
+
     public static int determineDoorNumber() {
-        // Should this be its own class?
         int billsPros = countBillsPros();
         int hus = countHUs();
         int headLoad = determineHeadLoad();
         if (hasHeadLoad()) {
             headLoad = 0;
         }
-    // Does this work?  A bill pro is one order.  HUs are handling units.  1 skid = 1 HU.
         int totalLoad = billsPros * hus;
 
         if (majorityGoesToSpecificBuilding()) {
@@ -148,16 +150,19 @@ public class ManifestProcessor {
         } else if (goesToBuilding(5)) {
             return findOpenDoor(columbusDoors);
         }
-        return -1; // No building found
-
+        return -1;
     }
 
     public static int countBillsPros() {
-        return 10;
+        return manifest.getCustomerBills().size();
     }
 
     public static int countHUs() {
-        return 5;
+        int totalHUs = 0;
+        for (CustomerBill cb : manifest.getCustomerBills()) {
+            totalHUs += cb.getHandlingUnits();
+        }
+        return totalHUs;
     }
 
     public static int determineHeadLoad() {
@@ -188,7 +193,13 @@ public class ManifestProcessor {
     }
 
     public static void assignDoor(int doorNumber) {
+        if (isDoorAssigned(doorNumber)) {
+            System.out.println("Door " + doorNumber + " is already assigned, looking for the next available door.");
+            doorNumber = findFirstOpenDoor();
+        }
+
         System.out.println("Door Assigned: " + doorNumber);
+        assignedDoors.add(doorNumber);
     }
 
     public static boolean hasBillOf8OrMoreHUs() {
@@ -200,22 +211,34 @@ public class ManifestProcessor {
     }
 
     public static int findFirstOpenDoor() {
-        return 1;
+        List<Integer> allDoors = new ArrayList<>();
+        allDoors.addAll(columbusDoors);
+        allDoors.addAll(cincinnatiDoors);
+        allDoors.addAll(daytonDoors);
+        allDoors.addAll(building1Doors);
+        allDoors.addAll(building2Doors);
+        allDoors.addAll(building3Doors);
+        allDoors.addAll(building4Doors);
+        allDoors.addAll(building5Doors);
+
+        for (int door : allDoors) {
+            if (!isDoorAssigned(door)) {
+                return door;
+            }
+        }
+        return -1;
     }
 
     public static int findOpenDoor(List<Integer> doors) {
         for (int door : doors) {
-            if (isDoorOpen(door)) {
+            if (!isDoorAssigned(door)) {
                 return door;
             }
         }
-        return -1; // No open door found
-
-
+        return -1;
     }
 
-    public static boolean isDoorOpen(int door) {
-
-        return true;
+    public static boolean isDoorAssigned(int door) {
+        return assignedDoors.contains(door);
     }
 }
