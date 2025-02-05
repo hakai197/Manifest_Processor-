@@ -4,9 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ManifestProcessor {
-    private static List<Integer> columbusDoors = new ArrayList<>();
+
     private static List<Integer> cincinnatiDoors = new ArrayList<>();
     private static List<Integer> daytonDoors = new ArrayList<>();
+    private static List<Integer> columbusDoors = new ArrayList<>();
     private static List<Integer> building1Doors = new ArrayList<>();
     private static List<Integer> building2Doors = new ArrayList<>();
     private static List<Integer> building3Doors = new ArrayList<>();
@@ -29,14 +30,7 @@ public class ManifestProcessor {
         startProcess();
     }
 
-    public static void initializeColumbusDoors() {
-        for (int i = 247; i <= 265; i++) {
-            columbusDoors.add(i);
-        }
-        for (int i = 340; i <= 356; i++) {
-            columbusDoors.add(i);
-        }
-    }
+
 
     public static void initializeCincinnatiDoors() {
         for (int i = 41; i <= 48; i++) {
@@ -59,6 +53,14 @@ public class ManifestProcessor {
         }
         for (int i = 374; i <= 398; i++) {
             daytonDoors.add(i);
+        }
+    }
+    public static void initializeColumbusDoors() {
+        for (int i = 247; i <= 265; i++) {
+            columbusDoors.add(i);
+        }
+        for (int i = 340; i <= 356; i++) {
+            columbusDoors.add(i);
         }
     }
 
@@ -124,14 +126,14 @@ public class ManifestProcessor {
 
     public static int determineDoorNumber() {
         int billsPros = countBillsPros();
-        int hus = countHUs();
+        int hus = getTotalHUs();
         int headLoad = determineHeadLoad();
         if (hasHeadLoad()) {
             headLoad = 0;
         }
         int totalLoad = billsPros * hus;
 
-        if (majorityGoesToSpecificBuilding()) {
+        if (majorityGoesToSpecificBuilding(hus)) {
             return assignDoorBasedOnBuilding();
         } else {
             return findFirstOpenDoor();
@@ -157,7 +159,7 @@ public class ManifestProcessor {
         return manifest.getCustomerBills().size();
     }
 
-    public static int countHUs() {
+    public static int getTotalHUs() {
         int totalHUs = 0;
         for (CustomerBill cb : manifest.getCustomerBills()) {
             totalHUs += cb.getHandlingUnits();
@@ -165,23 +167,50 @@ public class ManifestProcessor {
         return totalHUs;
     }
 
+    public static int getTotalWeight() {
+        int totalWeight = 0;
+        for (CustomerBill cb : manifest.getCustomerBills()) {
+            totalWeight += cb.getWeight();
+        }
+        return totalWeight;
+    }
+
     public static int determineHeadLoad() {
-        if (hasBillOf8OrMoreHUs()) {
-            if (hasBillOver10kWeight()) {
-                return 1;
-            } else {
-                return 0;
-            }
+        if (hasBillOf8OrMoreHUs() || hasBillOver10kWeight()) {
+            return 1;
         }
         return 0;
     }
 
     public static boolean hasHeadLoad() {
-        return true;
+        return determineHeadLoad() == 1;
     }
 
-    public static boolean majorityGoesToSpecificBuilding() {
-        return true;
+    public static boolean hasBillOf8OrMoreHUs() {
+        for (CustomerBill cb : manifest.getCustomerBills()) {
+            if (cb.getHandlingUnits() >= 8) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasBillOver10kWeight() {
+        for (CustomerBill cb : manifest.getCustomerBills()) {
+            if (cb.getWeight() >= 10000) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean majorityGoesToSpecificBuilding(int totalHUs) {
+        int totalDoors =  cincinnatiDoors.size() + daytonDoors.size() +columbusDoors.size() +
+                building1Doors.size() + building2Doors.size() + building3Doors.size() +
+                building4Doors.size() + building5Doors.size();
+
+        double percentage = (double) totalHUs / totalDoors;
+        return percentage >= 0.25;
     }
 
     public static boolean goesToBuilding(int buildingNumber) {
@@ -202,19 +231,11 @@ public class ManifestProcessor {
         assignedDoors.add(doorNumber);
     }
 
-    public static boolean hasBillOf8OrMoreHUs() {
-        return true;
-    }
-
-    public static boolean hasBillOver10kWeight() {
-        return true;
-    }
-
     public static int findFirstOpenDoor() {
         List<Integer> allDoors = new ArrayList<>();
-        allDoors.addAll(columbusDoors);
         allDoors.addAll(cincinnatiDoors);
         allDoors.addAll(daytonDoors);
+        allDoors.addAll(columbusDoors);
         allDoors.addAll(building1Doors);
         allDoors.addAll(building2Doors);
         allDoors.addAll(building3Doors);
