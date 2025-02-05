@@ -1,0 +1,5 @@
+The Manifest Processor is designed to enhance the efficiency of unloading semi-trailers, though it can be adapted for any freight-based business. It begins by categorizing information on a Customer Bill, such as addresses, the number of handling units (HUs), weight, delivery date, and any special tags. Once categorized, the individual bills are combined into a Manifest, representing the full load inside a trailer.
+
+Given the large size of most freight docks and shipping yards, improper placement of freight can lead to long unload times, delivery delays, and congestion. The Manifest Processor uses the information from the full manifest to determine the optimal placement for the trailer, ensuring the quickest unload time.
+
+Example: A semi-trailer is docked with 24 pallets of freight destined for 24 different locations, with 8 of those pallets going to California. Since all California freight is loaded from 3 dock doors, the trailer should be docked as close as possible to these three doors to ensure a swift unload time.
