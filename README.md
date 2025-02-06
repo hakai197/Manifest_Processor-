@@ -1,5 +1,7 @@
 Manifest Processor
+
 Overview
+
 The Manifest Processor is a program designed to optimize trailer docking assignments based on handling units, weight, and location. It ensures efficient freight handling and improves logistics operations by selecting the best docking location for each trailer.
 
 Features
