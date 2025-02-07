@@ -5,15 +5,15 @@ import java.util.Set;
 
 public class ManifestProcessor {
 
-    private static List<Integer> cincinnatiDoors = new ArrayList<>();
-    private static List<Integer> daytonDoors = new ArrayList<>();
-    private static List<Integer> columbusDoors = new ArrayList<>();
-    private static List<Integer> building1Doors = new ArrayList<>();
-    private static List<Integer> building2Doors = new ArrayList<>();
-    private static List<Integer> building3Doors = new ArrayList<>();
-    private static List<Integer> building4Doors = new ArrayList<>();
-    private static List<Integer> building5Doors = new ArrayList<>();
-    private static Set<Integer> assignedDoors = new HashSet<>();
+    private static final List<Integer> cincinnatiDoors = new ArrayList<>();
+    private static final List<Integer> daytonDoors = new ArrayList<>();
+    private static final  List<Integer> columbusDoors = new ArrayList<>();
+    private static final List<Integer> building1Doors = new ArrayList<>();
+    private static final List<Integer> building2Doors = new ArrayList<>();
+    private static final  List<Integer> building3Doors = new ArrayList<>();
+    private static final List<Integer> building4Doors = new ArrayList<>();
+    private static final List<Integer> building5Doors = new ArrayList<>();
+    private static  final Set<Integer> assignedDoors = new HashSet<>();
 
     public static void main(String[] args) {
         initializeColumbusDoors();
