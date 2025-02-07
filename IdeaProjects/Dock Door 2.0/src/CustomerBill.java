@@ -1,9 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 public class CustomerBill {
 
-// Should this be a part of a Manifest Class?   
+// Should this be a part of a Manifest Class?
+    public static Map<String,CustomerBill>manifest = new HashMap<>();
     private String proNumber;
     private String customerName;
     private String customerAddress;

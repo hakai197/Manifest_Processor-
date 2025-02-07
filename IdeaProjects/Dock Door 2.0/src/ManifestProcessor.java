@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ManifestProcessor {
@@ -15,8 +15,6 @@ public class ManifestProcessor {
     private static List<Integer> building5Doors = new ArrayList<>();
     private static Set<Integer> assignedDoors = new HashSet<>();
 
-    private static Manifest manifest = new Manifest();
-
     public static void main(String[] args) {
         initializeColumbusDoors();
         initializeCincinnatiDoors();
@@ -29,8 +27,6 @@ public class ManifestProcessor {
         importManifest();
         startProcess();
     }
-
-
 
     public static void initializeCincinnatiDoors() {
         for (int i = 41; i <= 48; i++) {
@@ -55,6 +51,7 @@ public class ManifestProcessor {
             daytonDoors.add(i);
         }
     }
+
     public static void initializeColumbusDoors() {
         for (int i = 247; i <= 265; i++) {
             columbusDoors.add(i);
@@ -156,12 +153,12 @@ public class ManifestProcessor {
     }
 
     public static int countBillsPros() {
-        return manifest.getCustomerBills().size();
+        return CustomerBill.manifest.size();
     }
 
     public static int getTotalHUs() {
         int totalHUs = 0;
-        for (CustomerBill cb : manifest.getCustomerBills()) {
+        for (CustomerBill cb : CustomerBill.manifest.values()) {
             totalHUs += cb.getHandlingUnits();
         }
         return totalHUs;
@@ -169,7 +166,7 @@ public class ManifestProcessor {
 
     public static int getTotalWeight() {
         int totalWeight = 0;
-        for (CustomerBill cb : manifest.getCustomerBills()) {
+        for (CustomerBill cb : CustomerBill.manifest.values()) {
             totalWeight += cb.getWeight();
         }
         return totalWeight;
@@ -187,7 +184,7 @@ public class ManifestProcessor {
     }
 
     public static boolean hasBillOf8OrMoreHUs() {
-        for (CustomerBill cb : manifest.getCustomerBills()) {
+        for (CustomerBill cb : CustomerBill.manifest.values()) {
             if (cb.getHandlingUnits() >= 8) {
                 return true;
             }
@@ -196,7 +193,7 @@ public class ManifestProcessor {
     }
 
     public static boolean hasBillOver10kWeight() {
-        for (CustomerBill cb : manifest.getCustomerBills()) {
+        for (CustomerBill cb : CustomerBill.manifest.values()) {
             if (cb.getWeight() >= 10000) {
                 return true;
             }
@@ -205,7 +202,7 @@ public class ManifestProcessor {
     }
 
     public static boolean majorityGoesToSpecificBuilding(int totalHUs) {
-        int totalDoors =  cincinnatiDoors.size() + daytonDoors.size() +columbusDoors.size() +
+        int totalDoors = cincinnatiDoors.size() + daytonDoors.size() + columbusDoors.size() +
                 building1Doors.size() + building2Doors.size() + building3Doors.size() +
                 building4Doors.size() + building5Doors.size();
 
