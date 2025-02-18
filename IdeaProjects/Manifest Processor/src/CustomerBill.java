@@ -6,13 +6,12 @@ import java.util.Scanner;
 
 public class CustomerBill {
     private List<String[]> customerBills;
-
-    public CustomerBill() {
+public
+  CustomerBill() {
         this.customerBills = new ArrayList<>();
     }
 
     public void readDataset(String filePath) {
-        customerBills.clear();
         try (Scanner scanner = new Scanner(new File("data/CustomerBills.txt"))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -24,7 +23,8 @@ public class CustomerBill {
         }
     }
 
-    public void displayTrailerContents(String trailerNumber) {
+    public String displayTrailerContents(String trailerNumber) {
+        String results = "";
         boolean found = false;
         for (String[] bill : customerBills) {
             if (bill[0].equals(trailerNumber)) {
@@ -42,6 +42,7 @@ public class CustomerBill {
         if (!found) {
             System.out.println("No bills found for trailer number: " + trailerNumber);
         }
+        return results;
     }
 }
 
