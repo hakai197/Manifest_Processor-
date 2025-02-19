@@ -2,15 +2,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ManifestProcessor {
     private List<Integer> availableDoors;
     private List<String> customerBills;
     private List<String> unloaders;
-    private List<AssignedDoor> assignedDoors;
+    private Map<Integer, String> assignedDoors;
 
     public ManifestProcessor() {
         this.availableDoors = new ArrayList<>();
@@ -18,12 +16,8 @@ public class ManifestProcessor {
             availableDoors.add(i);
         }
         this.customerBills = new ArrayList<>();
-        this.unloaders = new ArrayList<>();
-        this.assignedDoors = new ArrayList<>();
-    }
-
-    // Method placeholder
-    private static void readDataset(String s) {
+        this.unloaders = new ArrayList<>(Arrays.asList("Alice", "Bob", "Charlie"));
+        this.assignedDoors = new HashMap<>();
     }
 
     // Assign Door
@@ -33,9 +27,14 @@ public class ManifestProcessor {
             return;
         }
 
+        if (!unloaders.contains(employeeName)) {
+            System.out.println("Invalid employee name.");
+            return;
+        }
+
         availableDoors.remove(Integer.valueOf(doorNumber));
         unloaders.remove(employeeName);
-        assignedDoors.add(new AssignedDoor(doorNumber, employeeName));
+        assignedDoors.put(doorNumber, employeeName);
 
         System.out.println("Door " + doorNumber + " has been assigned to trailer " + trailerNumber + " with employee " + employeeName + ".");
     }
@@ -65,27 +64,25 @@ public class ManifestProcessor {
     }
 
     // Release Door
+    public void releaseDoor(int doorNumber) {
+        if (assignedDoors.containsKey(doorNumber)) {
+            String employeeName = assignedDoors.get(doorNumber);
+            availableDoors.add(doorNumber);
+            unloaders.add(employeeName);
+            assignedDoors.remove(doorNumber);
+            System.out.println("Door " + doorNumber + " and employee " + employeeName + " have been released.");
+        } else {
+            System.out.println("Door " + doorNumber + " is not currently assigned.");
+        }
+    }
+
+    // Release Door Interactive
     public void releaseDoorInteractive(Scanner scanner) {
         System.out.print("Enter door number to release: ");
         int doorNumber = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
-        AssignedDoor assignedDoor = null;
-        for (AssignedDoor ad : assignedDoors) {
-            if (ad.getDoorNumber() == doorNumber) {
-                assignedDoor = ad;
-                break;
-            }
-        }
-
-        if (assignedDoor != null) {
-            availableDoors.add(doorNumber);
-            unloaders.add(assignedDoor.getEmployeeName());
-            assignedDoors.remove(assignedDoor);
-            System.out.println("Door " + doorNumber + " and employee " + assignedDoor.getEmployeeName() + " have been released.");
-        } else {
-            System.out.println("Door " + doorNumber + " is not currently assigned.");
-        }
+        releaseDoor(doorNumber);
     }
 
     // View Unloaders from Employees.txt
@@ -132,24 +129,21 @@ public class ManifestProcessor {
         System.out.println("Customer bill added: " + customerBill);
     }
 
-    // SeeManifest
+    // See Manifest
     public String seeManifest(String trailerNumber) {
         CustomerBill customerBill = new CustomerBill();
         customerBill.readDataset("data/CustomerBills.txt");
-        String trailerContents = customerBill.displayTrailerContents(trailerNumber);
-
-        if (trailerContents.isEmpty()) {
-            return "No bills found for trailer number: " + trailerNumber;
-        }
-        return trailerContents;
+        return customerBill.getManifestForTrailer(trailerNumber);
     }
 
-    public void seeManifestInteractive(Scanner scanner) {
+    public String seeManifestInteractive(Scanner scanner) {
         System.out.print("Enter Trailer Number: ");
         String trailerNumber = scanner.nextLine();
 
         String manifest = seeManifest(trailerNumber);
         System.out.println(manifest);
+
+        return manifest;
     }
 
     public void viewUnloadersInteractive() {
@@ -187,7 +181,7 @@ public class ManifestProcessor {
         addUnloader(unloader);
     }
 
-    // New method: View Assigned Trailers and Employees
+    // View Assigned Trailers and Employees
     public void viewAssignedTrailersAndEmployees() {
         if (assignedDoors.isEmpty()) {
             System.out.println("No assigned doors.");
@@ -195,8 +189,8 @@ public class ManifestProcessor {
         }
 
         System.out.println("Assigned Trailers and Employees:");
-        for (AssignedDoor ad : assignedDoors) {
-            System.out.println("Door Number: " + ad.getDoorNumber() + ", Employee: " + ad.getEmployeeName());
+        for (Map.Entry<Integer, String> entry : assignedDoors.entrySet()) {
+            System.out.println("Door Number: " + entry.getKey() + ", Employee: " + entry.getValue());
         }
     }
 
