@@ -88,14 +88,6 @@ public class ManifestProcessor {
         }
     }
 
-    // See Manifest
-    public static class seeManifestInteractive {
-        public seeManifestInteractive(Scanner scanner) {
-        }
-
-
-            }
-
     // View Unloaders from Employees.txt
     public void viewUnloaders() {
         unloaders.clear();
@@ -140,19 +132,26 @@ public class ManifestProcessor {
         System.out.println("Customer bill added: " + customerBill);
     }
 
-    // Methods for user interactions
-    public void seeManifest(Scanner scanner) {
-        System.out.println("Enter Trailer Number: ");
-        String trailerNumber = scanner.nextLine();
-
+    // SeeManifest
+    public String seeManifest(String trailerNumber) {
         CustomerBill customerBill = new CustomerBill();
         customerBill.readDataset("data/CustomerBills.txt");
         String trailerContents = customerBill.displayTrailerContents(trailerNumber);
 
         if (trailerContents.isEmpty()) {
-            System.out.println("No bills found for trailer number: " + trailerNumber);
+            return "No bills found for trailer number: " + trailerNumber;
         }
+        return trailerContents;
     }
+
+    public void seeManifestInteractive(Scanner scanner) {
+        System.out.print("Enter Trailer Number: ");
+        String trailerNumber = scanner.nextLine();
+
+        String manifest = seeManifest(trailerNumber);
+        System.out.println(manifest);
+    }
+
     public void viewUnloadersInteractive() {
         viewUnloaders();
     }
@@ -225,7 +224,7 @@ public class ManifestProcessor {
             } else if (choice == 2) {
                 processor.releaseDoorInteractive(scanner);
             } else if (choice == 3) {
-                new seeManifestInteractive(scanner);
+                processor.seeManifestInteractive(scanner);
             } else if (choice == 4) {
                 processor.viewUnloadersInteractive();
             } else if (choice == 5) {
