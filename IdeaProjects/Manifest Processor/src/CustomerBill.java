@@ -11,21 +11,15 @@ public class CustomerBill {
         this.customerBills = new ArrayList<>();
     }
 
-    public List<String[]> getCustomerBills() {
-        return customerBills;
-    }
-
-    public void setCustomerBills(List<String[]> customerBills) {
-        this.customerBills = customerBills;
-    }
-
-    public CustomerBill(String filePath) {
-        this(); // Initialize customerBills list
+    public void readDataset(String filePath) {
         try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] bill = line.split("\\|");
-                getCustomerBills().add(bill);
+                for (int i = 0; i < bill.length; i++) {
+                    bill[i] = bill[i].trim(); // Trim any whitespace around the data
+                }
+                customerBills.add(bill);
             }
         } catch (IOException e) {
             System.err.println("Error reading customer bills dataset: " + e.getMessage());
@@ -33,23 +27,23 @@ public class CustomerBill {
     }
 
     public String getManifestForTrailer(String trailerNumber) {
-        String results = "";
+        StringBuilder results = new StringBuilder();
         boolean found = false;
-        for (String[] bill : getCustomerBills()) {
+        for (String[] bill : customerBills) {
             if (bill[0].equals(trailerNumber)) {
-                results += "Trailer Number: " + bill[0] + "\n";
-                results += "Order Number: " + bill[1] + "\n";
-                results += "Customer Name: " + bill[2] + "\n";
-                results += "Customer Address: " + bill[3] + "\n";
-                results += "Handling Units: " + bill[4] + "\n";
-                results += "Weight: " + bill[5] + "\n";
-                results += "Delivery Door Assigned: " + bill[6] + "\n\n";
+                results.append("Trailer Number: ").append(bill[0]).append("\n")
+                        .append("Order Number: ").append(bill[1]).append("\n")
+                        .append("Customer Name: ").append(bill[2]).append("\n")
+                        .append("Customer Address: ").append(bill[3]).append("\n")
+                        .append("Handling Units: ").append(bill[4]).append("\n")
+                        .append("Weight: ").append(bill[5]).append("\n")
+                        .append("Delivery Door Assigned: ").append(bill[6]).append("\n\n");
                 found = true;
             }
         }
         if (!found) {
-            results += "No bills found for trailer number: " + trailerNumber + "\n";
+            results.append("No bills found for trailer number: ").append(trailerNumber).append("\n");
         }
-        return results;
+        return results.toString();
     }
 }

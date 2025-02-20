@@ -20,24 +20,28 @@ public class Unloader {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] unloader = line.split("\\|"); // Split the line into an array
-                unloaders.add(unloader); // Add the array to the list
+                if (unloader.length == 3) { // Ensure there are 3 fields
+                    unloaders.add(unloader); // Add the array to the list
+                } else {
+                    System.out.println("Invalid data format: " + line);
+                }
             }
         } catch (IOException e) {
-            System.out.println("Error reading Employee dataset: " + e.getMessage());
+            System.out.println("Error reading dataset from file: " + filePath + " - " + e.getMessage());
         }
     }
 
     public String getUnloaderInfo(String unloaderName) {
-        String results = "";
+        StringBuilder results = new StringBuilder();
         for (String[] unloader : unloaders) {
             if (unloader[0].equals(unloaderName)) {
-                results = "Employee name: " + unloader[0] + "\n" +
-                        "Shift: " + unloader[1] + "\n" +
-                        "Employee Number: " + unloader[2] + "\n";
+                results.append("Employee name: ").append(unloader[0]).append("\n")
+                        .append("Shift: ").append(unloader[1]).append("\n")
+                        .append("Employee Number: ").append(unloader[2]).append("\n");
                 break; // Exit loop once the unloader is found
             }
         }
-        return results;
+        return results.toString();
     }
 
     public void viewUnloaders() {
@@ -46,10 +50,9 @@ public class Unloader {
         } else {
             System.out.println("Unloaders:");
             for (String[] unloader : unloaders) {
-                System.out.println("Employee name: " + unloader[0] +
-                        ", Shift: " + unloader[1] +
-                        ", Employee Number: " + unloader[2]);
+                System.out.printf("Employee name: %s, Shift: %s, Employee Number: %s%n", unloader[0], unloader[1], unloader[2]);
             }
         }
     }
+
 }
