@@ -11,15 +11,21 @@ public class CustomerBill {
         this.customerBills = new ArrayList<>();
     }
 
-    public void readDataset(String filePath) {
+    public List<String[]> getCustomerBills() {
+        return customerBills;
+    }
+
+    public void setCustomerBills(List<String[]> customerBills) {
+        this.customerBills = customerBills;
+    }
+
+    public CustomerBill(String filePath) {
+        this(); // Initialize customerBills list
         try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] bill = line.split("\\|");
-                for (int i = 0; i < bill.length; i++) {
-                    bill[i] = bill[i].trim(); // Trim any whitespace around the data
-                }
-                customerBills.add(bill);
+                getCustomerBills().add(bill);
             }
         } catch (IOException e) {
             System.err.println("Error reading customer bills dataset: " + e.getMessage());
@@ -29,7 +35,7 @@ public class CustomerBill {
     public String getManifestForTrailer(String trailerNumber) {
         String results = "";
         boolean found = false;
-        for (String[] bill : customerBills) {
+        for (String[] bill : getCustomerBills()) {
             if (bill[0].equals(trailerNumber)) {
                 results += "Trailer Number: " + bill[0] + "\n";
                 results += "Order Number: " + bill[1] + "\n";

@@ -7,8 +7,9 @@ import java.util.*;
 public class ManifestProcessor {
     private List<Integer> availableDoors;
     private List<String> customerBills;
-    private List<String> unloaders;
     private Map<Integer, String> assignedDoors;
+    private Unloader unloader; // Use the Unloader class to manage unloaders
+    private CustomerBill customerBill; //Use the Customer bill Class
 
     public ManifestProcessor() {
         this.availableDoors = new ArrayList<>();
@@ -16,8 +17,10 @@ public class ManifestProcessor {
             availableDoors.add(i);
         }
         this.customerBills = new ArrayList<>();
-        this.unloaders = new ArrayList<>(Arrays.asList("Alice", "Bob", "Charlie"));
         this.assignedDoors = new HashMap<>();
+        this.unloader = new Unloader(); // Initialize the Unloader instance
+        this.unloader.readDataset("data/Employees.txt");// Load unloaders from the file
+        this.customerBill = new CustomerBill("data/CustomerBills.txt");
     }
 
     // Assign Door
@@ -27,13 +30,22 @@ public class ManifestProcessor {
             return;
         }
 
-        if (!unloaders.contains(employeeName)) {
+        // Check if the employee exists using the Unloader class
+        boolean employeeExists = false;
+        for (String[] unloaderData : unloader.getUnloaders()) {
+            if (unloaderData[0].equals(employeeName)) {
+                employeeExists = true;
+                break;
+            }
+        }
+
+        if (!employeeExists) {
             System.out.println("Invalid employee name.");
             return;
         }
 
+        // Assign the door
         availableDoors.remove(Integer.valueOf(doorNumber));
-        unloaders.remove(employeeName);
         assignedDoors.put(doorNumber, employeeName);
 
         System.out.println("Door " + doorNumber + " has been assigned to trailer " + trailerNumber + " with employee " + employeeName + ".");
@@ -49,8 +61,9 @@ public class ManifestProcessor {
         System.out.print("Enter trailer number: ");
         String trailerNumber = scanner.nextLine();
 
+        // Display available employees using the Unloader class
         System.out.println("Available Employees:");
-        viewUnloaders();
+        unloader.viewUnloaders();
 
         System.out.print("Enter employee name: ");
         String employeeName = scanner.nextLine();
@@ -68,7 +81,6 @@ public class ManifestProcessor {
         if (assignedDoors.containsKey(doorNumber)) {
             String employeeName = assignedDoors.get(doorNumber);
             availableDoors.add(doorNumber);
-            unloaders.add(employeeName);
             assignedDoors.remove(doorNumber);
             System.out.println("Door " + doorNumber + " and employee " + employeeName + " have been released.");
         } else {
@@ -87,31 +99,29 @@ public class ManifestProcessor {
 
     // View Unloaders from Employees.txt
     public void viewUnloaders() {
-        unloaders.clear();
-        try (Scanner scanner = new Scanner(new File("data/Employees.txt"))) {
-            while (scanner.hasNextLine()) {
-                String unloader = scanner.nextLine();
-                unloaders.add(unloader);
-            }
+        List<String[]> unloaders = unloader.getUnloaders();
 
-            if (unloaders.isEmpty()) {
-                System.out.println("No unloaders available.");
-            } else {
-                System.out.println("Unloaders: " + unloaders);
+        if (unloaders.isEmpty()) {
+            System.out.println("No unloaders available.");
+        } else {
+            System.out.println("Unloaders:");
+            for (String[] unloaderData : unloaders) {
+                // Format and display each unloader's information
+                System.out.println("Employee name: " + unloaderData[0] +
+                        ", Shift: " + unloaderData[1] +
+                        ", Employee Number: " + unloaderData[2]);
             }
-        } catch (IOException e) {
-            System.err.println("Error reading unloaders dataset: " + e.getMessage());
         }
     }
 
     // Add Unloader and update Employees.txt
-    public void addUnloader(String unloader) {
+    public void addUnloader(String unloaderData) {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(new FileWriter("data/Employees.txt", true));
-            writer.println(unloader);
-            unloaders.add(unloader);
-            System.out.println("Unloader added: " + unloader);
+            writer.println(unloaderData);
+            unloader.readDataset("data/Employees.txt"); // Reload unloaders to update the list
+            System.out.println("Unloader added: " + unloaderData);
         } catch (IOException e) {
             System.err.println("Error writing to unloaders dataset: " + e.getMessage());
         } finally {
@@ -124,18 +134,22 @@ public class ManifestProcessor {
 
     // Add Customer Bill
     public void addCustomerBill(String trailerNumber, String orderNumber, String customerName, String customerAddress, String handlingUnits, String weight, String deliveryDoorAssignment) {
-        String customerBill = String.join(", ", trailerNumber, orderNumber, customerName, customerAddress, handlingUnits, weight, deliveryDoorAssignment);
-        customerBills.add(customerBill);
-        System.out.println("Customer bill added: " + customerBill);
+        String[] newBill = {trailerNumber, orderNumber, customerName, customerAddress, handlingUnits, weight, deliveryDoorAssignment};
+        customerBills.add(Arrays.toString(newBill));
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter("data/CustomerBills.txt", true))) {
+            writer.println(String.join(" | ", newBill));
+            System.out.println("Customer Bill added");
+        } catch (IOException e) {
+            System.err.println("Error writing customer bill to file: " + e.getMessage());
+        }
     }
 
-    // See Manifest
     public String seeManifest(String trailerNumber) {
-        CustomerBill customerBill = new CustomerBill();
-        customerBill.readDataset("data/CustomerBills.txt");
         return customerBill.getManifestForTrailer(trailerNumber);
     }
 
+    // See Manifest Interactive
     public String seeManifestInteractive(Scanner scanner) {
         System.out.print("Enter Trailer Number: ");
         String trailerNumber = scanner.nextLine();
@@ -145,7 +159,6 @@ public class ManifestProcessor {
 
         return manifest;
     }
-
     public void viewUnloadersInteractive() {
         viewUnloaders();
     }
@@ -176,9 +189,9 @@ public class ManifestProcessor {
     }
 
     public void addUnloaderInteractive(Scanner scanner) {
-        System.out.print("Enter unloader to add: ");
-        String unloader = scanner.nextLine();
-        addUnloader(unloader);
+        System.out.print("Enter unloader data (format: Name|Shift|EmployeeNumber): ");
+        String unloaderData = scanner.nextLine();
+        addUnloader(unloaderData);
     }
 
     // View Assigned Trailers and Employees
