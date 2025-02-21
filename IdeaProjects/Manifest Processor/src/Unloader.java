@@ -8,7 +8,19 @@ public class Unloader extends DatasetReader {
 
     @Override
     public void processRecord(String[] record) {
-        // Processing logic for unloaders can be implemented here
+
+        if (record.length < 3) {
+            System.err.println("Invalid record: " + Arrays.toString(record));
+            return;
+        }
+
+        String employeeName = record[0];
+        String shift = record[1];
+        String employeeNumber = record[2];
+
+
+        System.out.printf("Processing Unloader: Name=%s, Shift=%s, Employee Number=%s%n",
+                employeeName, shift, employeeNumber);
     }
 
     public String getUnloaderInfo(String unloaderName) {
