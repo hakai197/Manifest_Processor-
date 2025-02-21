@@ -1,58 +1,47 @@
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-public class Unloader {
-    private List<String[]> unloaders;
-
-    public Unloader() {
-        this.unloaders = new ArrayList<>();
+public class Unloader extends DatasetReader {
+    public Unloader(String filePath) {
+        super(filePath);
     }
 
-    public List<String[]> getUnloaders() {
-        return unloaders;
-    }
-
-    public void readDataset(String filePath) {
-        try (Scanner scanner = new Scanner(new File(filePath))) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] unloader = line.split("\\|"); // Split the line into an array
-                if (unloader.length == 3) { // Ensure there are 3 fields
-                    unloaders.add(unloader); // Add the array to the list
-                } else {
-                    System.out.println("Invalid data format: " + line);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading dataset from file: " + filePath + " - " + e.getMessage());
-        }
+    @Override
+    public void processRecord(String[] record) {
+        // Processing logic for unloaders can be implemented here
     }
 
     public String getUnloaderInfo(String unloaderName) {
-        StringBuilder results = new StringBuilder();
-        for (String[] unloader : unloaders) {
+        String results = "";
+        for (String[] unloader : getRecords()) {
             if (unloader[0].equals(unloaderName)) {
-                results.append("Employee name: ").append(unloader[0]).append("\n")
-                        .append("Shift: ").append(unloader[1]).append("\n")
-                        .append("Employee Number: ").append(unloader[2]).append("\n");
-                break; // Exit loop once the unloader is found
+                results += "Employee name: " + unloader[0] + "\n";
+                results += "Shift: " + unloader[1] + "\n";
+                results += "Employee Number: " + unloader[2] + "\n";
+                break;
             }
         }
-        return results.toString();
+        return results;
     }
 
     public void viewUnloaders() {
-        if (unloaders.isEmpty()) {
+        List<String[]> records = getRecords();
+        if (records == null || records.isEmpty()) {
             System.out.println("No unloaders available.");
-        } else {
-            System.out.println("Unloaders:");
-            for (String[] unloader : unloaders) {
-                System.out.printf("Employee name: %s, Shift: %s, Employee Number: %s%n", unloader[0], unloader[1], unloader[2]);
+            return;
+        }
+
+        System.out.println("Unloaders:");
+        for (String[] unloader : records) {
+            if (unloader.length < 3) {
+                System.out.println("Skipping invalid record: " + Arrays.toString(unloader));
+                continue; // Prevent accessing out-of-bounds indices
             }
+
+            System.out.printf("Employee name: %s, Shift: %s, Employee Number: %s%n",
+                    unloader[0], unloader[1], unloader[2]);
         }
     }
-
 }
+
+
