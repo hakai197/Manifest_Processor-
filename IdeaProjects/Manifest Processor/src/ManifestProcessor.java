@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class ManifestProcessor {
+public class ManifestProcessor implements DoorAssignment {
     private List<Integer> availableDoors;
     private Map<Integer, String> assignedDoors;
     private Unloader unloader;
@@ -16,7 +16,8 @@ public class ManifestProcessor {
         this.customerBill = new CustomerBill(customerBillFilePath);
     }
 
-    public void assignDoor(String trailerNumber, String employeeName, int doorNumber) {
+    @Override
+    public void assignDoor(Scanner scanner, String trailerNumber, String employeeName, int doorNumber) {
         if (!availableDoors.contains(doorNumber)) {
             System.out.println("Invalid door number.");
             return;
@@ -36,6 +37,7 @@ public class ManifestProcessor {
         System.out.println("Door " + doorNumber + " has been assigned to trailer " + trailerNumber + " with employee " + employeeName + ".");
     }
 
+    @Override
     public void releaseDoor(int doorNumber) {
         if (assignedDoors.containsKey(doorNumber)) {
             String employeeName = assignedDoors.remove(doorNumber);
@@ -46,7 +48,9 @@ public class ManifestProcessor {
         }
     }
 
-    public void viewAssignedTrailersAndEmployees() {
+
+    @Override
+    public void viewAssignedTrailerAndEmployees() {
         if (assignedDoors.isEmpty()) {
             System.out.println("No assigned doors.");
         } else {
@@ -96,7 +100,7 @@ public class ManifestProcessor {
                 System.out.print("Enter door number: ");
                 int doorNumber = scanner.nextInt();
                 scanner.nextLine();
-                processor.assignDoor(trailerNumber, employeeName, doorNumber);
+                processor.assignDoor(scanner, trailerNumber, employeeName, doorNumber);
             } else if (choice == 2) {
                 System.out.print("Enter door number to release: ");
                 int doorNumber = scanner.nextInt();
@@ -125,7 +129,7 @@ public class ManifestProcessor {
                 String deliveryDoorAssignment = scanner.nextLine();
                 processor.addCustomerBill(trailerNumber, orderNumber, customerName, customerAddress, handlingUnits, weight, deliveryDoorAssignment);
             } else if (choice == 6) {
-                processor.viewAssignedTrailersAndEmployees();
+                processor.viewAssignedTrailerAndEmployees();
             } else if (choice == 7) {
                 System.out.println("Exiting...");
                 break;
