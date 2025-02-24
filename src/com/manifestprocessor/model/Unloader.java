@@ -1,7 +1,5 @@
 package com.manifestprocessor.model;
 
-
-
 import java.io.*;
 import java.util.*;
 

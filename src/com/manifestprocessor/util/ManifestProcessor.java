@@ -1,15 +1,14 @@
 package com.manifestprocessor.util;
 
-import com.manifestprocessor.model.CustomerBill;
-import com.manifestprocessor.model.Unloader;
 import com.manifestprocessor.model.Timer;
-
+import com.manifestprocessor.model.Unloader;
+import com.manifestprocessor.model.CustomerBill;
 
 
 import java.io.IOException;
 import java.util.*;
 
-public class ManifestProcessor implements DoorAssignment {
+public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignment {
     private List<Integer> availableDoors;
     private Map<Integer, String> assignedDoors;
     private List<String> assignedEntries;
@@ -142,7 +141,7 @@ public class ManifestProcessor implements DoorAssignment {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         try {
-            ManifestProcessor processor = new ManifestProcessor("src/main/resources/Employee.txt", "src/main/resources/CustomerBills.txt");
+            ManifestProcessor processor = new ManifestProcessor("data/Employees.txt", "data/CustomerBills.txt");
 
             while (true) {
                 System.out.println("\nMenu:");

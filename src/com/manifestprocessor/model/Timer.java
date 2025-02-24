@@ -1,5 +1,4 @@
 package com.manifestprocessor.model;
-
 import com.manifestprocessor.util.ManifestProcessor;
 
 
@@ -43,3 +42,4 @@ public class Timer {
         return totalTimeInSeconds / 3600.0;
     }
 }
+
