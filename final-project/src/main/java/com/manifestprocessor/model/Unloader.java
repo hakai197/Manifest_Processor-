@@ -1,8 +1,13 @@
+package com.manifestprocessor.model;
+
+
+
 import java.io.*;
 import java.util.*;
 
+// Pulls from .txt file and formats the Employees to a reader.
 public class Unloader extends DatasetReader {
-    public Unloader(String filePath) {
+    public Unloader(String filePath) throws IOException {
         super(filePath);
     }
 
@@ -10,8 +15,7 @@ public class Unloader extends DatasetReader {
     public void processRecord(String[] record) {
 
         if (record.length < 3) {
-            System.err.println("Invalid record: " + Arrays.toString(record));
-            return;
+            System.out.println("Invalid record: " + Arrays.toString(record));
         }
 
         String employeeName = record[0];
@@ -55,5 +59,3 @@ public class Unloader extends DatasetReader {
         }
     }
 }
-
-

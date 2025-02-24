@@ -1,3 +1,5 @@
+package com.manifestprocessor.model;
+
 import java.io.*;
 import java.util.*;
 
@@ -5,20 +7,31 @@ public abstract class DatasetReader {
     private List<String[]> records;
     private String filePath;
 
-    public DatasetReader(String filePath) {
+    public DatasetReader(String filePath) throws IOException {
         this.filePath = filePath;
         this.records = new ArrayList<>();
         readDataset();
     }
 
-   private void readDataset() {
+    public void setRecords(List<String[]> records) {
+        this.records = records;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+
+    private void readDataset() throws IOException {
         records.clear();
         try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
                 records.add(scanner.nextLine().split(" \\| "));
             }
-        } catch (IOException e) {
-            System.err.println("Error reading dataset from " + filePath + ": " + e.getMessage());
         }
     }
 

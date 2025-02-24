@@ -18,4 +18,3 @@ Daniel Jackson | 2nd Shift | 76543
 Amelia Martin | 2nd Shift | 21098
 Jane Davis | 2nd Shift | 87654
 Thomas Miller | 2nd Shift | 10987
-
