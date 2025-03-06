@@ -13,16 +13,8 @@ public abstract class DatasetReader {
         readDataset();
     }
 
-    public void setRecords(List<String[]> records) {
-        this.records = records;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public List<String[]> getRecords() {
+        return records;
     }
 
 
@@ -30,13 +22,22 @@ public abstract class DatasetReader {
         records.clear();
         try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
-                records.add(scanner.nextLine().split(" \\| "));
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+
+                String[] fields = line.split("\\|");
+                String[] record = new String[fields.length];
+                for (int i = 0; i < fields.length; i++) {
+                    record[i] = fields[i].trim();
+                }
+
+                if (isValidRecord(record)) {
+                    records.add(record);
+                }
             }
         }
-    }
-
-    public List<String[]> getRecords() {
-        return records;
     }
 
     public void addRecord(String record) {
@@ -48,6 +49,12 @@ public abstract class DatasetReader {
             System.err.println("Error writing to dataset: " + e.getMessage());
         }
     }
+
+    protected boolean isValidRecord(String[] record) {
+        return record.length == getExpectedFieldCount();
+    }
+
+    protected abstract int getExpectedFieldCount();
 
     public abstract void processRecord(String[] record);
 }

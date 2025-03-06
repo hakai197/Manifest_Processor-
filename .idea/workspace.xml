@@ -5,34 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="46a7b4f8-aa62-4e8d-8e36-d7d480aa628b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/CustomerBill.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/DatasetReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/Timer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/Unloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/manifestprocessor/util/DoorAssignment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/manifestprocessor/util/ManifestProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/CustomerBillTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/ManifestProcessorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/TestFileUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/UnloaderTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/.lms" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/com/manifestprocessor/model/CustomerBill.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/com/manifestprocessor/model/DatasetReader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/com/manifestprocessor/model/Timer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/com/manifestprocessor/model/Unloader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/com/manifestprocessor/util/DoorAssignment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/com/manifestprocessor/util/ManifestProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/test/CustomerBillTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/test/ManifestProcessorTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/test/TestFileUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/java/test/UnloaderTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/resources/CustomerBills.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final-project/src/main/resources/Employee.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/CustomerBills.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/CustomerBills.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/CustomerBill.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/CustomerBill.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/DatasetReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/DatasetReader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Timer.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Timer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Unloader.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Unloader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/DoorAssignment.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/DoorAssignment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/ManifestProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/ManifestProcessor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/test/ManifestProcessorTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/CustomerBill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/CustomerBill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/DatasetReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/DatasetReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/Timer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/Timer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/Unloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/Unloader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/util/DoorAssignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/util/DoorAssignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/util/ManifestProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/util/ManifestProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/ManifestProcessorTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

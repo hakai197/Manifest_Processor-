@@ -1,4 +1,6 @@
 package com.manifestprocessor.model;
+
+import com.manifestprocessor.model.CustomerBill;
 import com.manifestprocessor.util.ManifestProcessor;
 
 
@@ -8,6 +10,7 @@ public class Timer {
     private CustomerBill customerBill;
 
     // Constructor should accept a CustomerBill object
+    //Why is it showing not used.  I had to use a this. instance in the processor?
     public Timer(ManifestProcessor manifestProcessor, CustomerBill customerBill) {
         this.customerBill = customerBill;
     }
@@ -31,6 +34,7 @@ public class Timer {
                 travelTime *= 2; // round trip
 
                 totalTravelTime += travelTime;
+                //grab each handling unit per order.
                 totalHandlingUnits += Integer.parseInt(bill[4]);
             }
         }
@@ -42,4 +46,3 @@ public class Timer {
         return totalTimeInSeconds / 3600.0;
     }
 }
-

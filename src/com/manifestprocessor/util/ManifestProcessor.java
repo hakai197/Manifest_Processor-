@@ -1,14 +1,15 @@
 package com.manifestprocessor.util;
 
-import com.manifestprocessor.model.Timer;
-import com.manifestprocessor.model.Unloader;
 import com.manifestprocessor.model.CustomerBill;
+import com.manifestprocessor.model.Unloader;
+import com.manifestprocessor.model.Timer;
 
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignment {
+public class ManifestProcessor implements DoorAssignment {
     private List<Integer> availableDoors;
     private Map<Integer, String> assignedDoors;
     private List<String> assignedEntries;
@@ -24,62 +25,62 @@ public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignm
         this.assignedDoors = new HashMap<>();
         this.assignedEntries = new ArrayList<>();
         this.unloader = new Unloader(unloaderFilePath);
-        this.customerBill = new CustomerBill(customerBillFilePath); // Initialize CustomerBill
-        this.timer = new Timer(this, customerBill); // Pass CustomerBill object to Timer
+        this.customerBill = new CustomerBill(customerBillFilePath);
+        this.timer = new Timer(this, customerBill);
+
+    }
+
+    public Map<Integer, String> getAssignedDoors() {
+        return assignedDoors;
     }
 
     @Override
-    public void assignDoor(Scanner scanner, String trailerNumber, String employeeName, int doorNumber) throws IllegalArgumentException {
+    public void assignDoor(Scanner scanner, String trailerNumber, String employeeName, int doorNumber)
+            throws IllegalArgumentException {
         trailerNumber = trailerNumber.trim();
         employeeName = employeeName.trim();
 
 
-
-        // Validate trailer number
         while (trailerNumber.isEmpty()) {
-            System.out.print("Invalid trailer number: Trailer number cannot be empty. Please re-enter the trailer number: ");
+            System.out.println("Invalid trailer number: Trailer number cannot be empty. Please re-enter the trailer number: ");
             trailerNumber = scanner.nextLine().trim();
         }
 
-        // Validate employee name
+
         while (employeeName.isEmpty()) {
-            System.out.print("Invalid employee name: Employee name cannot be empty. Please re-enter the employee name: ");
+            System.out.println("Invalid employee name: Employee name cannot be empty. Please re-enter the employee name: ");
             employeeName = scanner.nextLine().trim();
         }
 
-        // Validate door number
-        while (!availableDoors.contains(doorNumber)) {
-            System.out.print("Invalid door number: Door " + doorNumber + " is not available. Please re-enter the door number: ");
+
+        while (!availableDoors.contains(doorNumber) || assignedDoors.containsKey(doorNumber)) {
+            System.out.println("Invalid door number: Door " + doorNumber + " is not available or already assigned. Please re-enter the door number: ");
             doorNumber = Integer.parseInt(scanner.nextLine().trim());
         }
 
-        // Check if the trailer is already assigned to another door
+
         String finalEmployeeName = employeeName;
         while (assignedDoors.values().stream().anyMatch(name -> name.equals(finalEmployeeName))) {
-            System.out.print("Employee " + employeeName + " is already assigned to another door. Please re-enter the employee name: ");
+            System.out.println("Employee " + employeeName + " is already assigned to another door. Please re-enter the employee name: ");
             employeeName = scanner.nextLine().trim();
         }
 
-        // Check if the employee exists in the unloader records
+
         String finalEmployeeName1 = employeeName;
         while (!unloader.getRecords().stream().anyMatch(record -> record[0].trim().equals(finalEmployeeName1))) {
-            System.out.print("Employee not found: " + employeeName + " is not in the unloader records. Please re-enter the employee name: ");
+            System.out.println("Employee not found: " + employeeName + " is not in the unloader records. Please re-enter the employee name: ");
             employeeName = scanner.nextLine().trim();
         }
 
-        // Check if the door is already assigned
-        while (assignedDoors.containsKey(doorNumber)) {
-            System.out.print("Door " + doorNumber + " is already assigned. Please re-enter the door number: ");
-            doorNumber = Integer.parseInt(scanner.nextLine().trim());
-        }
 
-        // Assign the door
         availableDoors.remove(Integer.valueOf(doorNumber));
         assignedDoors.put(doorNumber, employeeName);
-        assignedEntries.add("Door " + doorNumber + " assigned to trailer " + trailerNumber + " with employee " + employeeName);
-        System.out.println("Door " + doorNumber + " has been assigned to trailer " + trailerNumber + " with employee " + employeeName + ".");
+        assignedEntries.add("Door " + doorNumber + " assigned to trailer " + trailerNumber + " with employee " +
+                employeeName);
+        System.out.println("Door " + doorNumber + " has been assigned to trailer " + trailerNumber + " with employee " +
+                employeeName + ".");
 
-        // Estimate completion time
+
         try {
             double estimateTimeHours = timer.estimateCompletionTime(trailerNumber, doorNumber);
             System.out.println("Estimated Completion Time: " + String.format("%.2f", estimateTimeHours) + " hours.");
@@ -89,15 +90,16 @@ public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignm
     }
 
     @Override
-    public void releaseDoor(int doorNumber) throws IllegalArgumentException {
+    public boolean releaseDoor(int doorNumber) throws IllegalArgumentException {
         if (!assignedDoors.containsKey(doorNumber)) {
-            throw new IllegalArgumentException("Door " + doorNumber + " is not currently assigned.");
+            return false;
         }
 
-        // Release the door
+
         String employeeName = assignedDoors.remove(doorNumber);
         availableDoors.add(doorNumber);
         System.out.println("Door " + doorNumber + " and employee " + employeeName + " have been released.");
+        return true;
     }
 
     @Override
@@ -119,7 +121,11 @@ public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignm
         unloader.viewUnloaders();
     }
 
-    public void addCustomerBill(String trailerNumber, String orderNumber, String customerName, String customerAddress, String handlingUnits, String weight, String deliveryDoorAssignment) {
+    //Add to existing trailer or new trailer.  .trim to ensure it enters in correctly. Using append in the file writer
+    // to make sure that it writes to the next line.  Love that "\n".  Want to update in with a better GUI.
+    public void addCustomerBill(String trailerNumber, String orderNumber, String customerName, String customerAddress,
+                                String handlingUnits, String weight, String deliveryDoorAssignment) {
+
         trailerNumber = trailerNumber.trim();
         orderNumber = orderNumber.trim();
         customerName = customerName.trim();
@@ -128,20 +134,47 @@ public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignm
         weight = weight.trim();
         deliveryDoorAssignment = deliveryDoorAssignment.trim();
 
-        String bill = trailerNumber + " | " + orderNumber + " | " + customerName + " | " + customerAddress + " | " + handlingUnits + " | " + weight + " | " + deliveryDoorAssignment;
-        customerBill.addRecord(bill);
-        System.out.println("Customer Bill added.");
+
+        String bill = trailerNumber + " | " + orderNumber + " | " + customerName + " | " + customerAddress + " | "
+                + handlingUnits + " | " + weight + " | " + deliveryDoorAssignment;
+
+        FileWriter writer = null;
+        try {
+
+            writer = new FileWriter("src/main/resources/CustomerBills.txt", true);
+            writer.write(bill + "\n");
+            writer.flush();
+            System.out.println("Customer Bill added.");
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+            customerBill.addRecord(bill);
+        } finally {
+
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    System.out.println("Error closing the file writer");
+                }
+            }
+        }
     }
 
-    public String seeManifest(String trailerNumber) {
+
+    public String seeManifest(String trailerNumber) throws IOException {
         trailerNumber = trailerNumber.trim();
+
+
         return customerBill.getManifestForTrailer(trailerNumber);
     }
 
+    // Main Method and options, really happy with the Go Back subChoice.  I'd like to change this as we get into HTML to
+    // show more information if possible.
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         try {
-            ManifestProcessor processor = new ManifestProcessor("data/Employees.txt", "data/CustomerBills.txt");
+            ManifestProcessor processor = new ManifestProcessor("data/Employees.txt",
+                    "data/CustomerBills.txt");
 
             while (true) {
                 System.out.println("\nMenu:");
@@ -152,81 +185,127 @@ public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignm
                 System.out.println("5. Add Customer Bill");
                 System.out.println("6. View Assigned Trailers and Employees");
                 System.out.println("7. Exit");
-                System.out.print("Choose an option: ");
+                System.out.println("Choose an option: ");
 
                 int choice = scanner.nextInt();
                 scanner.nextLine();
 
                 if (choice == 1) {
-                    System.out.println("1.Assign Door");
-                    System.out.println("0.Go Back");
-                    System.out.println("Select Choice");
+                    System.out.println("1. Assign Door");
+                    System.out.println("0. Go Back");
+                    System.out.println("Select Choice: ");
                     int subChoice = Integer.parseInt(scanner.nextLine());
                     if (subChoice == 1) {
-                        System.out.print("Enter trailer number: ");
+                        System.out.println("Enter trailer number: ");
                         String trailerNumber = scanner.nextLine().trim();
-                        System.out.print("Enter employee name: ");
+
+
+                        List<String[]> headLoads = processor.customerBill.suggestHeadLoads();
+                        List<String> headLoadOrders = new ArrayList<>();
+                        for (String[] bill : headLoads) {
+                            if (bill[0].equals(trailerNumber)) {
+                                headLoadOrders.add(bill[1]);
+                            }
+                        }
+
+                        if (!headLoadOrders.isEmpty()) {
+                            System.out.println("This trailer qualifies as a HEAD LOAD (8+ handling units OR 10,000+ lbs).");
+                            System.out.println("Orders with head load: " + String.join(", ", headLoadOrders));
+                        } else {
+                            System.out.println("This trailer does NOT qualify as a head load.");
+                        }
+
+                        // Display suggested door (if available)
+                        Integer suggestedDoor = processor.customerBill.getSuggestedDoor(trailerNumber);
+                        int doorNumber;
+                        if (suggestedDoor != null && !processor.getAssignedDoors().containsKey(suggestedDoor)) {
+                            System.out.println("Suggested door for trailer " + trailerNumber + ": Door " + suggestedDoor);
+                            System.out.println("Do you want to assign this door? (yes/no): ");
+                            String response = scanner.nextLine().trim().toLowerCase();
+                            if (response.equals("yes")) {
+                                doorNumber = suggestedDoor; // Use the suggested door
+                            } else {
+                                System.out.println("Enter door number: ");
+                                doorNumber = Integer.parseInt(scanner.nextLine().trim());
+                            }
+                        } else {
+                            System.out.println("No suggested door available for this trailer.");
+                            System.out.println("Enter door number: ");
+                            doorNumber = Integer.parseInt(scanner.nextLine().trim());
+                        }
+
+
+                        System.out.println("Enter employee name: ");
                         String employeeName = scanner.nextLine().trim();
-                        System.out.print("Enter door number: ");
-                        int doorNumber = scanner.nextInt();
-                        scanner.nextLine();
+
+
                         processor.assignDoor(scanner, trailerNumber, employeeName, doorNumber);
                     }
                 } else if (choice == 2) {
-                    System.out.println("1.Release Door");
-                    System.out.println("0.Go Back");
-                    System.out.println("Select Choice");
+                    System.out.println("1. Release Door");
+                    System.out.println("0. Go Back");
+                    System.out.println("Select Choice: ");
                     int subChoice = Integer.parseInt(scanner.nextLine());
                     if (subChoice == 1) {
-                        System.out.print("Enter door number to release: ");
-                        int doorNumber = scanner.nextInt();
-                        scanner.nextLine(); // Consume newline
-                        processor.releaseDoor(doorNumber);
+                        boolean doorReleased = false;
+                        while (!doorReleased) {
+                            System.out.println("Enter door number to release: ");
+                            int doorNumber = scanner.nextInt();
+                            scanner.nextLine();
+
+
+                            doorReleased = processor.releaseDoor(doorNumber);
+
+                            if (!doorReleased) {
+                                System.out.println("Door " + doorNumber + " is not currently assigned. Please enter a valid door number.");
+                            }
+                        }
                     }
                 } else if (choice == 3) {
-                    System.out.println("1.See Manifest");
-                    System.out.println("0.Go Back");
-                    System.out.println("Select Choice");
+                    System.out.println("1. See Manifest");
+                    System.out.println("0. Go Back");
+                    System.out.println("Select Choice: ");
                     int subChoice = Integer.parseInt(scanner.nextLine());
                     if (subChoice == 1) {
-                        System.out.print("Enter trailer number: ");
+                        System.out.println("Enter trailer number: ");
                         String trailerNumber = scanner.nextLine().trim();
                         System.out.println(processor.seeManifest(trailerNumber));
                     }
                 } else if (choice == 4) {
-                    System.out.println("1.View Unloaders");
-                    System.out.println("0.Go Back");
-                    System.out.println("Select Choice");
+                    System.out.println("1. View Unloaders");
+                    System.out.println("0. Go Back");
+                    System.out.println("Select Choice: ");
                     int subChoice = Integer.parseInt(scanner.nextLine());
                     if (subChoice == 1) {
                         processor.viewUnloaders();
                     }
                 } else if (choice == 5) {
-                    System.out.println("1.Add Customer Bill");
-                    System.out.println("0.Go Back");
-                    System.out.println("Select Choice");
+                    System.out.println("1. Add Customer Bill");
+                    System.out.println("0. Go Back");
+                    System.out.println("Select Choice: ");
                     int subChoice = Integer.parseInt(scanner.nextLine());
                     if (subChoice == 1) {
-                        System.out.print("Enter trailer number: ");
+                        System.out.println("Enter trailer number: ");
                         String trailerNumber = scanner.nextLine().trim();
-                        System.out.print("Enter order number: ");
+                        System.out.println("Enter order number: ");
                         String orderNumber = scanner.nextLine().trim();
                         System.out.print("Enter customer name: ");
                         String customerName = scanner.nextLine().trim();
-                        System.out.print("Enter customer address: ");
+                        System.out.println("Enter customer address: ");
                         String customerAddress = scanner.nextLine().trim();
-                        System.out.print("Enter handling units: ");
+                        System.out.println("Enter handling units: ");
                         String handlingUnits = scanner.nextLine().trim();
-                        System.out.print("Enter weight: ");
+                        System.out.println("Enter weight: ");
                         String weight = scanner.nextLine().trim();
-                        System.out.print("Enter delivery door assignment: ");
+                        System.out.println("Enter delivery door assignment: ");
                         String deliveryDoorAssignment = scanner.nextLine().trim();
-                        processor.addCustomerBill(trailerNumber, orderNumber, customerName, customerAddress, handlingUnits, weight, deliveryDoorAssignment);
+                        processor.addCustomerBill(trailerNumber, orderNumber, customerName, customerAddress,
+                                handlingUnits, weight, deliveryDoorAssignment);
                     }
                 } else if (choice == 6) {
-                    System.out.println("1.View Assigned Trailers");
-                    System.out.println("0.Go Back");
-                    System.out.println("Select Choice");
+                    System.out.println("1. View Assigned Trailers");
+                    System.out.println("0. Go Back");
+                    System.out.println("Select Choice: ");
                     int subChoice = Integer.parseInt(scanner.nextLine());
                     if (subChoice == 1) {
                         processor.viewAssignedTrailerAndEmployees();
@@ -244,8 +323,5 @@ public class ManifestProcessor implements com.manifestprocessor.util.DoorAssignm
             scanner.close();
         }
     }
-
-    public Map<Integer, String> getAssignedDoors() {
-        return assignedDoors;
-    }
 }
+
