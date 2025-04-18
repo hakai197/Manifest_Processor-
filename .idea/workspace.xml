@@ -6,21 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="46a7b4f8-aa62-4e8d-8e36-d7d480aa628b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/CustomerBills.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/CustomerBills.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/CustomerBill.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/CustomerBill.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/DatasetReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/DatasetReader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Timer.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Timer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Unloader.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/model/Unloader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/DoorAssignment.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/DoorAssignment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/ManifestProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/production/Manifest_Processor-/com/manifestprocessor/util/ManifestProcessor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/production/Manifest_Processor-/test/ManifestProcessorTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/CustomerBill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/CustomerBill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/DatasetReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/DatasetReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/Timer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/Timer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/model/Unloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/model/Unloader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/util/DoorAssignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/util/DoorAssignment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/manifestprocessor/util/ManifestProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/manifestprocessor/util/ManifestProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/ManifestProcessorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/CustomerBills.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/Employees.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +63,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/hakai/github/Manifest_Processor-",
+    "last_opened_file_path": "C:/Users/hakai/github/Manifest_Processor-/production/Manifest_Processor-/com/manifestprocessor/model",
     "onboarding.tips.debug.path": "C:/Users/hakai/github/Manifest_Processor-/src/Main.java",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
@@ -86,6 +73,14 @@
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="test" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hakai\github\Manifest_Processor-\production\Manifest_Processor-\com\manifestprocessor\model" />
+      <recent name="C:\Users\hakai\github\Manifest_Processor-\production\Manifest_Processor-\com\manifestprocessor\exception" />
+      <recent name="C:\Users\hakai\github\Manifest_Processor-\production\Manifest_Processor-\com\manifestprocessor\dao" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hakai\github\Manifest_Processor-\production\Manifest_Processor-\com\manifestprocessor\dao" />
     </key>
   </component>
   <component name="RunManager">
